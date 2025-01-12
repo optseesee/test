@@ -3,7 +3,7 @@ import tempfile
 from logging import getLogger
 from pathlib import Path
 from typing import Callable
-
+import os
 import ipdb  # noqa
 from dotenv import load_dotenv
 from langchain_core.prompts import ChatPromptTemplate
@@ -23,6 +23,12 @@ from tools import (
 )
 from utils import set_base_log_level, set_log_level
 
+#langsmith見方
+#https://zenn.dev/pharmax/articles/61edc477e4de17
+os.environ["LANGCHAIN_TRACING_V2"]="true"
+os.environ["LANGCHAIN_ENDPOINT"]="https://api.smith.langchain.com"
+os.environ["LANGCHAIN_API_KEY"]="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"
+os.environ["LANGCHAIN_PROJECT"]="multi_agent_dev1"
 
 def _retrieve_args():
     """
@@ -332,7 +338,6 @@ def generate_finalizer(code_generator: CompiledStateGraph) -> Callable:
 
 def main(question_file: Path, graph_plot: bool, interact: bool, verbose: int) -> None:
     load_dotenv()
-
     logger = getLogger(__name__)
     set_base_log_level(verbose)
 
